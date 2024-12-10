@@ -8,24 +8,23 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
-<bean class="Draw3D" id="draw3DID">
+    <bean class="Draw3D" id="draw3DID"/>
 
-</bean>
-<bean class="Draw2D" id="draw2DID">
+    <bean class="Draw2D" id="draw2DID"/>
 
-</bean>
-
-<bean class="Square" id="squareID" scope="prototype">
-    <property name="draw3D" ref="draw3DID"></property>
-    <property name="draw2D" ref="draw2DID"></property>
-</bean>
-
-    <bean class="Circle" id="circleID" scope="singleton">
-        <constructor-arg index="0" ref="draw2DID"></constructor-arg>
-        <constructor-arg index="1" ref="draw3DID"></constructor-arg>
+    <bean class="Square" id="squareID" scope="prototype">
+        <property name="draw3D" ref="draw3DID"/>
+        <property name="draw2D" ref="draw2DID"/>
+        <property name="databaseOperations" ref="init-destroy"/>
     </bean>
 
+    <bean class="Circle" id="circleID"> <!--singleton is default-->
+        <constructor-arg index="0" ref="draw2DID"/>
+        <constructor-arg index="1" ref="draw3DID"/>
+        <constructor-arg index="2" ref="init-destroy"/>
+    </bean>
 
-
+    <bean id="init-destroy" class="DatabaseOperations" init-method="connectToDatabase"
+          destroy-method="disconnectFromDatabase"/>
 
 </beans>
